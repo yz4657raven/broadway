@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Data Viz Project Broadway</title>
+		<script type="text/javascript" src="d3.js"></script>
+		<style type="text/css">
+            body {
+                background-color: black;
+				color:white;
+				margin:0;
+            }
+			
+			#textScroll{
+				overflow:hidden;
+				width:27%;
+				/*border:1px dotted white;*/
+				margin-top:170px;
+				position:absolute;
+			}
+		
+				#title{
+					width:99%;
+					height:150px;
+					overflow:hidden;
+					padding-left:15px;
+					/*border:1px dotted white;*/
+				}
+				
+				#libby{
+					width:70.5%;
+					margin-left:28.5%;
+					margin-top:20px;
+					height:100vh;
+					/*border:1px dotted white;*/
+					overflow:hidden;
+				}
+				#libby::-webkit-scrollbar {
+				  display: none; 
+				}
+				
+				
+				#chart{
+					overflow:auto;
+					height:600px;
+					margin-left:12%;
+					width:88%;
+					/*border:1px dotted white;*/
+				}
+				#chart::-webkit-scrollbar {
+				  display: none; 
+				}
+				#header{
+					overflow:auto;
+					height:195px;
+					margin-left:12%;
+					width:88%;
+					background-color: black;
+					/*border:1px dotted white;*/
+				}
+				#header::-webkit-scrollbar {
+				  display: none; 
+				}
+				
+				#sort{
+					overflow:hidden;
+					height:195px;
+					width:8%;
+					background-color: black;
+					/*border:1px dotted white;*/
+					position:absolute;
+				}
+				
+				#timeline{
+					overflow:auto;
+					height:600px;
+					width:8%;
+					margin-top:195px;
+					background-color: black;
+					/*border:1px dotted white;*/
+					position:absolute;
+				}
+				#timeline::-webkit-scrollbar {
+				  display: none;
+				}
+				
+				#zhihan{
+					width:70.5%;
+					margin-left:28.5%;
+					margin-top:20px;
+					height:100vh;
+					/*border:1px dotted white;*/
+				}
+				#zhihan::-webkit-scrollbar {
+				  display: none;
+				}
+				
+				#end{
+					width:70.5%;
+					margin-left:28.5%;
+					margin-top:20px;
+					height:400px;
+					border:1px dotted white;
+				}
+				p{
+					padding-top:1vh;
+					font-size:17px;
+					font-family:Arial;
+				}
+				h1{
+					margin:0;
+					padding:0;
+					font-family:Impact;
+					font-size:65px;
+				}
+				
+				h2{
+					margin:0;
+					padding-bottom:14px;
+					font-family:Impact;
+					font-size:35px;
+				}
+				
+				#tooltip1 {
+					position: fixed;
+					width: auto;
+					height: auto;
+					padding: 7px;
+					left:2%;
+					bottom:3%;
+					background-color: white;
+					color:black;
+					text-align:left;
+					-webkit-border-radius: 10px;
+					-moz-border-radius: 10px;
+					border-radius: 7px;
+					pointer-events: none;
+				}
+			
+				#tooltip1.hidden {
+					display: none;
+				}
+			
+				#tooltip1 p {
+					margin: 0;
+					font-size: 16px;
+					line-height: 20px;
+				}
+				
+				#tooltip2 {
+					position: fixed;
+					width: auto;
+					height: auto;
+					padding: 7px;
+					left:2%;
+					bottom:3%;
+					background-color: white;
+					color:black;
+					text-align:left;
+					-webkit-border-radius: 10px;
+					-moz-border-radius: 10px;
+					border-radius: 7px;
+					pointer-events: none;
+				}
+			
+				#tooltip2.hidden {
+					display: none;
+				}
+			
+				#tooltip2 p {
+					margin: 0;
+					font-size: 16px;
+					line-height: 20px;
+				}
+				
+				#textLibby{
+					height:100vh;
+					padding-left:15px;
+					display:flex;
+					align-items:center;
+					overflow:auto;
+					/*border:1px dotted white;*/
+				}
+				#textLibby::-webkit-scrollbar {
+				  display: none;
+				}
+				
+				#raven{
+					width:70.5%;
+					margin-left:28.5%;
+					margin-top:10vh;
+					height:100vh;
+					overflow:hidden;
+					/*border: 1px dotted white;*/
+				}
+				
+				#textRaven{
+					height:100vh;
+					padding-left:15px;
+					display:flex;
+					align-items:center;
+					overflow:auto;
+					margin-top:10vh;
+					/*border:1px dotted white;*/
+				}
+				#textRaven::-webkit-scrollbar {
+				  display: none;
+				}
+				
+				#textZhihan{
+					height:100vh;
+					padding-left:15px;
+					display:flex;
+					align-items:center;
+					overflow:auto;
+					margin-top:20px;
+					/*border:1px dotted white;*/
+				}
+				#textZhihan::-webkit-scrollbar {
+				  display: none;
+				}
+				
+				#ending{
+					height:400px;
+					padding-left:15px;
+					display:flex;
+					align-items:center;
+					overflow:auto;
+					margin-top:20px;
+					/*border:1px dotted white;*/
+				}
+				#ending::-webkit-scrollbar {
+				  display: none;
+				}
+				
+				#tooltip3 {
+					position: absolute;
+					width: 130px;
+					height: auto;
+					padding: 10px;
+					background-color: black;
+					-webkit-border-radius: 10px;
+					-moz-border-radius: 10px;
+					border-radius: 10px;
+					 border: 2px solid red;
+					 -webkit-box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.8);
+					 -moz-box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.8);
+					 box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.8);
+					pointer-events: none;
+				}
+
+				#tooltip3.hidden {
+					display: none;
+				}
+
+				#tooltip3 p {
+					margin: 0;
+					font-family: Impact;
+				  color: rgba(255, 242, 128, 1);
+					font-size: 14px;
+					line-height: 20px;
+					text-shadow: 0 0 10px rgba(255, 242, 128, 0.8);
+				}
+				#zhihanChart{
+					font-family: Impact;
+					font-size: 20px;
+				}
+				
+		        #container {
+		          position: relative;
+		          z-index: 100;
+				  height:95%;
+				  overflow:hidden;
+		        }
+				
+				#container::-webkit-scrollbar {
+				  display: none;
+				}
+				
+		        #chartAnimation {
+		          position: absolute; 
+		          width: 70.5%;
+		          height:95%;
+		          z-index: 50;
+				  overflow:hidden;
+		        }
+				
+		        .panel {
+		          width: 10%;
+		          padding-left: 10px;
+		          padding-top: 25vh;
+		          padding-bottom: 25vh;
+				  opacity:0;
+				  font-size:15px;
+          
+		        }
+		        .panel:first-child {
+		          padding-top: 35vh;
+		        }
+		        .panel:last-child {
+		          padding-bottom: 45vh;
+		        }
+		
+		</style>
+	</head>
+	<body>
+		
+		<div id="textScroll">
+			<div id="textLibby">
+				<div id="text">
+					<h2>'WICKED' TURNS 20</h2>
+					<p style="margin-top:0px;">This year marks Wicked’s 20th anniversary on Broadway. With over 7,000 performances and grossing over $1.5 billion, Wicked is regarded as one of Broadway’s most successful shows. How does it actually stack up to an entire history of Broadway shows?</p>
+					<p>Scroll to explore the plays staged at each theater each year.</p>
+				</div>
+			</div>
+			
+			<div id="textRaven">
+				<div id="text">
+					<h2>43 YEARS, 20 SHOWS</h2>
+					<p style="margin-top:0px;">Theatrical activity can be traced back to Broadway as early as the mid 1700s but it was the late 1800s that multiple theaters began moving to the area and the Theater District was born. By the early 1900s, some of today’s oldest Broadway theaters were built.</p>
+					<p style="margin-top:0px;">Here we visualized the box office data of Broadway's 20 longest-running shows starting from 1980. Click to switch between yearly and weekly view. Hover for more information.</p>
+				</div>
+			</div>
+			
+			<div id="textZhihan">
+				<div id="text">
+					<h2>AWARDS</h2>
+					<p style="margin-top:0px;">At the 2004 Tony Awards, 'Wicked' was nominated in 10 categories and won 3 of them: Best Actress in a Musical, Best Scenic Design, and Best Costume Design. We selected 32 shows to draw their Tony Awards nominations and wins, as well as runtime and numbers of performances.</p>
+					<p style="margin-top:0px;">Click to see the longest-running shows. Hover for more information.</p>
+				</div>
+			</div>
+			
+			<div id="ending">
+				<div id="text">
+					<h2>Ending</h2>
+					<p style="margin-top:0px;">In April 2023, 'Wicked' surpassed 'Cats' to become the 4th longest-running Broadway show in history. It was in the very same month that 'Phantom of the Opera' takes a final Broadway bow after 13,981 performances. Yet 6 out of the 20 longest-running shows are still currently playing.</p>
+				</div>
+			</div>
+			
+		</div>
+		
+		<div id="title">
+				<h1>Data Viz Project Broadway</h1>
+				<p style="margin-top:0px;">Zhihan Guo, Elizabeth Owen, Raven Zhang</p>
+		</div>
+		
+		<div id="libby">
+		  <div id="chartAnimation"></div>
+		  <div id="container" style="overflow: scroll">
+		      <div id="content">
+		              <div class="panel"><h3>1903</h3></div>
+		              <div class="panel"><h3>1904</h3></div>
+		              <div class="panel"><h3>1905</h3></div>
+		              <div class="panel"><h3>1906</h3></div>
+		              <div class="panel"><h3>1907</h3></div>
+		              <div class="panel"><h3>1908</h3></div>
+		              <div class="panel"><h3>1909</h3></div>
+            
+		  			<div class="panel"><h3>1910</h3></div>
+		              <div class="panel"><h3>1911</h3></div>
+		  			<div class="panel"><h3>1912</h3></div>
+		  			<div class="panel"><h3>1913</h3></div>
+		              <div class="panel"><h3>1914</h3></div>
+		              <div class="panel"><h3>1915</h3></div>
+		              <div class="panel"><h3>1916</h3></div>
+		              <div class="panel"><h3>1917</h3></div>
+		              <div class="panel"><h3>1918</h3></div>
+		              <div class="panel"><h3>1919</h3></div>
+			
+		              <div class="panel"><h3>1920</h3></div>			
+		              <div class="panel"><h3>1921</h3></div>
+		  			<div class="panel"><h3>1922</h3></div>
+		  			<div class="panel"><h3>1923</h3></div>
+		              <div class="panel"><h3>1924</h3></div>
+		              <div class="panel"><h3>1925</h3></div>
+		              <div class="panel"><h3>1926</h3></div>
+		              <div class="panel"><h3>1927</h3></div>
+		              <div class="panel"><h3>1928</h3></div>
+		              <div class="panel"><h3>1929</h3></div>
+			
+		              <div class="panel"><h3>1930</h3></div>			
+		              <div class="panel"><h3>1931</h3></div>
+		  			<div class="panel"><h3>1932</h3></div>
+		  			<div class="panel"><h3>1933</h3></div>
+		              <div class="panel"><h3>1934</h3></div>
+		              <div class="panel"><h3>1935</h3></div>
+		              <div class="panel"><h3>1936</h3></div>
+		              <div class="panel"><h3>1937</h3></div>
+		              <div class="panel"><h3>1938</h3></div>
+		              <div class="panel"><h3>1939</h3></div>
+			
+		              <div class="panel"><h3>1940</h3></div>			
+		              <div class="panel"><h3>1941</h3></div>
+		  			<div class="panel"><h3>1942</h3></div>
+		  			<div class="panel"><h3>1943</h3></div>
+		              <div class="panel"><h3>1944</h3></div>
+		              <div class="panel"><h3>1945</h3></div>
+		              <div class="panel"><h3>1946</h3></div>
+		              <div class="panel"><h3>1947</h3></div>
+		              <div class="panel"><h3>1948</h3></div>
+		              <div class="panel"><h3>1949</h3></div>
+			
+		              <div class="panel"><h3>1950</h3></div>			
+		              <div class="panel"><h3>1951</h3></div>
+		  			<div class="panel"><h3>1952</h3></div>
+		  			<div class="panel"><h3>1953</h3></div>
+		              <div class="panel"><h3>1954</h3></div>
+		              <div class="panel"><h3>1955</h3></div>
+		              <div class="panel"><h3>1956</h3></div>
+		              <div class="panel"><h3>1957</h3></div>
+		              <div class="panel"><h3>1958</h3></div>
+		              <div class="panel"><h3>1959</h3></div>
+			
+		              <div class="panel"><h3>1960</h3></div>			
+		              <div class="panel"><h3>1961</h3></div>
+		  			<div class="panel"><h3>1962</h3></div>
+		  			<div class="panel"><h3>1963</h3></div>
+		              <div class="panel"><h3>1964</h3></div>
+		              <div class="panel"><h3>1965</h3></div>
+		              <div class="panel"><h3>1966</h3></div>
+		              <div class="panel"><h3>1967</h3></div>
+		              <div class="panel"><h3>1968</h3></div>
+		              <div class="panel"><h3>1969</h3></div>
+			
+		              <div class="panel"><h3>1970</h3></div>			
+		              <div class="panel"><h3>1971</h3></div>
+		  			<div class="panel"><h3>1972</h3></div>
+		  			<div class="panel"><h3>1973</h3></div>
+		              <div class="panel"><h3>1974</h3></div>
+		              <div class="panel"><h3>1975</h3></div>
+		              <div class="panel"><h3>1976</h3></div>
+		              <div class="panel"><h3>1977</h3></div>
+		              <div class="panel"><h3>1978</h3></div>
+		              <div class="panel"><h3>1979</h3></div>
+			
+		              <div class="panel"><h3>1980</h3></div>			
+		              <div class="panel"><h3>1981</h3></div>
+		  			<div class="panel"><h3>1982</h3></div>
+		  			<div class="panel"><h3>1983</h3></div>
+		              <div class="panel"><h3>1984</h3></div>
+		              <div class="panel"><h3>1985</h3></div>
+		              <div class="panel"><h3>1986</h3></div>
+		              <div class="panel"><h3>1987</h3></div>
+		              <div class="panel"><h3>1988</h3></div>
+		              <div class="panel"><h3>1989</h3></div>
+			
+		              <div class="panel"><h3>1990</h3></div>			
+		              <div class="panel"><h3>1991</h3></div>
+		  			<div class="panel"><h3>1992</h3></div>
+		  			<div class="panel"><h3>1993</h3></div>
+		              <div class="panel"><h3>1994</h3></div>
+		              <div class="panel"><h3>1995</h3></div>
+		              <div class="panel"><h3>1996</h3></div>
+		              <div class="panel"><h3>1997</h3></div>
+		              <div class="panel"><h3>1998</h3></div>
+		              <div class="panel"><h3>1999</h3></div>
+			
+		              <div class="panel"><h3>2000</h3></div>			
+		              <div class="panel"><h3>2001</h3></div>
+		  			<div class="panel"><h3>2002</h3></div>
+		  			<div class="panel"><h3>2003</h3></div>
+		              <div class="panel"><h3>2004</h3></div>
+		              <div class="panel"><h3>2005</h3></div>
+		              <div class="panel"><h3>2006</h3></div>
+		              <div class="panel"><h3>2007</h3></div>
+		              <div class="panel"><h3>2008</h3></div>
+		              <div class="panel"><h3>2009</h3></div>
+			
+		              <div class="panel"><h3>2010</h3></div>			
+		              <div class="panel"><h3>2011</h3></div>
+		  			<div class="panel"><h3>2012</h3></div>
+		  			<div class="panel"><h3>2013</h3></div>
+		              <div class="panel"><h3>2014</h3></div>
+		              <div class="panel"><h3>2015</h3></div>
+		              <div class="panel"><h3>2016</h3></div>
+		              <div class="panel"><h3>2017</h3></div>
+		              <div class="panel"><h3>2018</h3></div>
+		              <div class="panel"><h3>2019</h3></div>
+			
+		              <div class="panel"><h3>2020</h3></div>			
+		              <div class="panel"><h3>2021</h3></div>
+		  			<div class="panel"><h3>2022</h3></div>
+		  			<div class="panel"><h3>2023</h3></div>
+					
+		              <div class="panel"><h3>2024</h3></div>
+			
+		              <div class="panel"><h3>2025</h3></div>			
+		              <div class="panel"><h3>2026</h3></div>
+		  			<div class="panel"><h3>2027</h3></div>
+		  			<div class="panel"><h3>2028</h3></div>
+			
+			
+			
+		      </div>
+		  </div>
+		  <script src="libby.js"></script>
+			
+			<p style="text-align:center; margin:12px;">Broadway Shows Staged at Each Theater Each Year, by Elizabeth Owen</p>
+		</div>
+		
+		<div id="raven">
+					<div id="sort">
+					</div>
+					
+					<div id="timeline" onscroll="document.getElementById('chart').scrollTop = this.scrollTop;">
+					</div>
+			
+					<div id="header" onscroll="document.getElementById('chart').scrollLeft = this.scrollLeft;">
+					</div>
+					
+						<div id="chart" onscroll="document.getElementById('header').scrollLeft = this.scrollLeft, document.getElementById('timeline').scrollTop = this.scrollTop;">
+							<div id="tooltip2" class="hidden">
+								<p><strong>Time: </strong><span id="time"></span></p>
+								<p><strong>Gross:</strong> $<span id="gross"></span></p>
+								<p><strong>Theatre: </strong><span id="theatre"></span></p>
+							</div>
+							
+							<div id="tooltip1" class="hidden">
+								<p><strong>Time: </strong><span id="time"></span></p>
+								<p><strong>Theatre: </strong><span id="theatre"></span></p>
+							</div>
+							
+						</div>
+						
+					<p style="text-align:center; margin:12px;">Grosses of 20 Longest-Running Broadway Shows from July 8th, 1980 to November 5th, 2023, by Raven Zhang</p>
+						
+		</div>
+		
+		
+
+		<div id="zhihan">
+			<div id="zhihanChart">
+				<div id="zhihanClick">
+		    <h2 style="font-size:25px; padding-top:50px; padding-left:45px;">CLICK TO SEE THE LONGEST-RUNNING SHOWS</h2>
+			</div>
+		  	<div id="tooltip3" class="hidden">
+		      <p id="value"></p>
+			  <script src="zhihan.js"></script>
+			</div>
+			<p style="text-align:center; margin:12px;">Tony Awards Nominations and Wins for Some Broadway Shows, by Zhihan Guo</p>
+		</div>
+			
+			</body>
+		
+</html>
+
+		<script src="yearlyView.js"></script>
+		
+		<script src="weeklyView.js"></script>
+		
+		<script>//header for raven's chart
+			
+			var svgHeader = d3.select("#header").append("svg").attr("width",1450).attr("height",185)
+						
+						var dataNames = ["Oh! Calcutta!","A Chorus Line","42nd Street","Fiddler on the Roof","My Fair Lady","Cats","Les Miserables","The Phantom of the Opera","Miss Saigon","Beauty And the Beast","Grease","Rent","Chicago","The Lion King","Mamma Mia!","Hairspray","Wicked","The Book of Mormon","Aladdin","Hamilton"]
+
+						svgHeader.selectAll("showNames")
+				 				   .data(dataNames)
+				 				   .enter()
+				 				   .append("text")
+				 				   .attr("x", function(d, i) {return i*65+17})//add padding here
+				 				   .attr("y", 0)
+								   .text(function(d,i){return d})
+				 				   .style("font-size","14px")
+								   .style("font-weight",700)
+								   .style("fill","white")
+								   .style('writing-mode','tb-rl')
+				 				   .attr("opacity",0.7)
+		
+		//sort setting
+			var xAlign = 59; 
+
+	//timeline years		
+	var svg11 = d3.select("#timeline")
+			.append("svg")
+			.attr("width", 120)
+			.attr("height", 735);
+			
+			d3.csv("byYear.csv")
+			.then (function(data){
+			svg11.selectAll("datesyear")
+			   .data(data)
+			   .enter()
+			   .append("text")
+			   .attr("x", xAlign)
+			   .attr("y", function(d, i) {return i*15+20+head})
+			   .text(function(d,i){return d["year"];})
+			   .style("font-size","14px")
+			   .style("text-anchor","middle")
+			   .style("fill", "white")
+				.attr("opacity",0.5);
+			});
+			
+		//timeline weeks	
+	var svg22 = d3.select("#timeline")
+			.append("svg")
+			.attr("width", 120)
+			.attr("height", 34030);
+			
+			d3.csv("grossbyWeek.csv")
+			.then (function(data){
+			svg22.selectAll("datesweek")
+			   .data(data)
+			   .enter()
+			   .append("text")
+			   .attr("x", xAlign)
+			   .attr("y", function(d, i) {return i*15+20+head})
+			   .text(function(d,i){return d["Week"]})
+			   .style("font-size","14px")
+			   .style("fill", "white")
+			   .style("text-anchor","middle")
+			   .attr("opacity",0.5);
+			});
+			
+		//default visibility
+			
+			svg2.attr("display","none")
+			svg1.attr("display","inline")
+			svg22.attr("display","none")
+			svg11.attr("display","inline")
+			
+		//sort interaction
+			var svgSort = d3.select("#sort").append("svg").attr("width",120).attr("height",180)
+			
+			var sortByYear = function(){
+				svg1.attr("display","inline");
+				svg2.attr("display","none");
+				svg11.attr("display","inline");
+				svg22.attr("display","none");
+			};
+			var sortByWeek = function(){
+				svg2.attr("display","inline");
+				svg1.attr("display","none");
+				svg11.attr("display","none")
+				svg22.attr("display","inline")
+			};
+			
+			var sort =["Yearly View","Weekly View"]
+			
+			svgSort.selectAll("sortByYear")
+				.data(sort)
+				.enter()
+				.append("text")
+				.attr("x",xAlign)
+				.attr("y", 157)
+				.text(sort[0])
+				.style("font-size","15px")
+				.style("font-weight",700)
+				.style("fill","white")
+				.style("text-anchor","middle")
+				.attr("opacity",0.5)
+			
+		  	 	.on("click", function() {
+		   			sortByYear();
+		  	 	});
+			
+			svgSort.selectAll("sortByWeek")
+				.data(sort)
+				.enter()
+				.append("text")
+				.attr("x",xAlign)
+				.attr("y", 177)
+				.text(sort[1])
+				.style("font-size","15px")
+				.style("font-weight",700)
+				.style("fill","white")
+				.style("text-anchor","middle")
+				.attr("opacity",0.5)
+					  	 	
+		  	 	.on("click", function() {
+		  	 		sortByWeek();
+		  	 	});
+			
+		</script>
